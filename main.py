@@ -1,4 +1,12 @@
-"""Second Wind Rider: a pump.fun replay bot (agent-fun/replay/v2).
+"""Second Wind Rider v2: a pump.fun replay bot (agent-fun/replay/v2).
+
+v2 tightens the entry (tight-entry rider): at least 8 distinct buyers,
+net buy flow of at least 2 SOL, and real reserves of at least 3 SOL, with
+a 10% stop-loss. Local sweep (grade-local, deterministic driver):
+v1 -0.20 SOL -> v2 +0.36 SOL dev, 164 coins, drawdown 6.4%,
+guardrails met. The tight-entry family was positive across all
+stop-loss values tested (+0.17..+0.36 SOL), which is the signal,
+not a single-variant fluke.
 
 Idea
 ----
@@ -42,9 +50,9 @@ FEE_BPS = 125
 # --- entry filters ---------------------------------------------------------
 MIN_AGE = 20            # slots since CreateEvent before a buy is allowed
 MAX_AGE = 40            # ... and after this the coin is decided for good
-MIN_BUYERS = 5          # distinct non-creator buyers seen
-MIN_NET_SOL = 1.0       # net SOL bought minus sold since creation
-MIN_RQ_SOL = 2.0        # real SOL reserves at decision time, at least
+MIN_BUYERS = 8          # distinct non-creator buyers seen
+MIN_NET_SOL = 2.0       # net SOL bought minus sold since creation
+MIN_RQ_SOL = 3.0        # real SOL reserves at decision time, at least
 MIN_RUNUP = 1.2         # price now / create price, at least
 MAX_RUNUP = 4.0         # ... and at most
 MAX_DEV_BUY_SOL = 2.5   # creator's own buys must stay below this
@@ -52,7 +60,7 @@ MIN_BUY_SOL = 0.03      # smallest buy worth paying the tx fee for
 STAKE_SOL = 0.08        # SOL aimed at per coin
 
 # --- exits -----------------------------------------------------------------
-STOP_LOSS = 0.15        # sell when value falls 15% under cost
+STOP_LOSS = 0.10        # sell when value falls 10% under cost
 MAX_HOLD = 500          # slots; then sell whatever is left
 STALE_SLOTS = 300       # slots with no trade on the coin; then sell
 EXIT_ON_DEV_SELL = True
